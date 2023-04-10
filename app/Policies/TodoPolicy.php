@@ -37,7 +37,7 @@ class TodoPolicy
      */
     public function update(User $user, Todo $todo): bool
     {
-        //
+        return $todo->user()->is($user);
     }
 
     /**
@@ -45,7 +45,7 @@ class TodoPolicy
      */
     public function delete(User $user, Todo $todo): bool
     {
-        //
+        return $this->update($user, $todo);
     }
 
     /**

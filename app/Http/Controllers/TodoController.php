@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTodoRequest;
 use App\Http\Requests\UpdateTodoRequest;
+use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use App\Models\Todo;
 use Inertia\Inertia;
@@ -41,7 +42,7 @@ class TodoController extends Controller
 
         $request->user()->todos()->create($validated);
 
-        return redirect(route('todos.index'));
+        return redirect(route('home'));
     }
 
     /**
@@ -63,16 +64,28 @@ class TodoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTodoRequest $request, Todo $todo)
+    public function update(Request $request, Todo $todo): RedirectResponse
     {
-        //
+        $this->authorize('update', $todo);
+
+        $validated = $request->validate([
+            'message' => 'required|string|max:255',
+        ]);
+
+        $todo->update($validated);
+
+        return redirect(route('todos.index'));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Todo $todo)
+    public function destroy(Todo $todo): RedirectResponse
     {
-        //
+        $this->authorize('delete', $todo);
+
+        $todo->delete();
+
+        return redirect(route('todos.index'));
     }
 }
