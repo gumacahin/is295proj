@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Todo>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Section>
  */
-class TodoFactory extends Factory
+class SectionFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,8 +17,7 @@ class TodoFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => fake()->words(rand(2, 15), true),
-            'description' => fake()->paragraph(),
+            'title' => fake()->words(rand(1, 2), true)
         ];
     }
 }

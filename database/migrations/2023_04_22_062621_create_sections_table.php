@@ -11,18 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('todos', function (Blueprint $table) {
+        Schema::create('sections', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('parent_id')->nullable();
             $table->string('title');
-            $table->text('description')->nullable();
-            $table->boolean('completed')->default(false);
+            $table->foreignId('project_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
-
-            $table->foreign('parent_id')
-                ->references('id')
-                ->on('todos')
-                ->onDelete('cascade');
         });
     }
 
@@ -31,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('todos');
+        Schema::dropIfExists('sections');
     }
 };

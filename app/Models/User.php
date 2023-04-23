@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Events\UserCreated;
 
 class User extends Authenticatable
 {
@@ -43,8 +44,18 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function todos(): HasMany
+    protected $dispatchesEvents = [
+        'created' => UserCreated::class,
+    ];
+
+    public function projects()
     {
-        return $this->hasMany(Todo::class);
+        return $this->hasMany(Project::class)->withoutDefault();
     }
+
+    public function getDefaultProject(): Project
+    {
+        return Project::where(['user_id' => $this->id])->first();
+    }
+
 }

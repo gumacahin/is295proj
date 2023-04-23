@@ -5,6 +5,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\TodoController;
+use App\Http\Controllers\ProjectController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +20,10 @@ use App\Http\Controllers\TodoController;
 */
 
 Route::get('/', function () {
+    if (Auth::check()) {
+        $user = Auth::user();
+        return redirect()->route('projects.show', $user->getDefaultProject());
+    }
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
@@ -25,6 +31,10 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 })->name('home');
+
+Route::get('/inbox', function () {
+    return Inertia::render('Inbox');
+})->middleware(['auth', 'verified'])->name('inbox');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -38,6 +48,10 @@ Route::middleware('auth')->group(function () {
 
 Route::resource('todos', TodoController::class)
     ->only(['index', 'store', 'update', 'destroy'])
+    ->middleware(['auth', 'verified']);
+
+Route::resource('projects', ProjectController::class)
+    // ->only(['index', 'store', 'update', 'destroy'])
     ->middleware(['auth', 'verified']);
 
 require __DIR__.'/auth.php';
