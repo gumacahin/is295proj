@@ -17,7 +17,11 @@ class SectionFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => fake()->words(rand(1, 2), true)
+            'project_id' => function () {
+                return \App\Models\Project::factory()->create()->id;
+            },
+            'title' => fake()->sentence,
+            'order' => fake()->randomNumber(),
         ];
     }
 }

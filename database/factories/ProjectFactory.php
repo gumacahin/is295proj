@@ -17,8 +17,12 @@ class ProjectFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => fake()->words(rand(2, 15), true),
-            'color' => fake()->hexColor()
+            'user_id' => function () {
+                return \App\Models\User::factory()->create()->id;
+            },
+            'title' => fake()->words(3, true),
+            'layout' => fake()->randomElement(['list', 'board']),
+            'color' => fake()->hexColor,
         ];
     }
 }

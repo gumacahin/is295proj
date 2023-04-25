@@ -17,7 +17,15 @@ class CommentFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'user_id' => function () {
+                return factory(App\Models\User::class)->create()->id;
+            },
+            'commentable_type' => $faker->randomElement(['App\Models\Project', 'App\Models\Todo']),
+            'commentable_id' => function (array $comment) {
+                $commentableType = $comment['commentable_type'];
+                return factory($commentableType)->create()->id;
+            },
+            'content' => $faker->paragraph,
         ];
     }
 }

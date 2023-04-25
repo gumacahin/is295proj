@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Events\TodoCreated;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,6 +18,8 @@ class Todo extends Model
         'title',
         'description',
         'completed',
+        'section_id',
+        'project_id',
     ];
 
     protected $dispatchesEvents = [
@@ -46,5 +49,16 @@ class Todo extends Model
     public function comments(): MorphMany
     {
         return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    /**
+     * Scope to retrieve todos that don't belong to any section.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWithoutSection(Builder $query): Builder
+    {
+        return $query->whereNull('section_id');
     }
 }

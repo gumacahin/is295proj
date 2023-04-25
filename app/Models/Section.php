@@ -11,6 +11,8 @@ class Section extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['title', 'order', 'project_id'];
+
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
