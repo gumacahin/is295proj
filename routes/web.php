@@ -21,8 +21,7 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     if (Auth::check()) {
-        $user = Auth::user();
-        return redirect()->route('projects.show', $user->getDefaultProject());
+        return redirect()->route('today');
     }
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -33,8 +32,22 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/inbox', function () {
-    return Inertia::render('Inbox');
+    return Inertia::render('Inbox', [
+        'project' => Auth::user()->getDefaultProject()
+    ]);
 })->middleware(['auth', 'verified'])->name('inbox');
+
+Route::get('/today', function () {
+    return Inertia::render('Inbox');
+})->middleware(['auth', 'verified'])->name('today');
+
+Route::get('/upcoming', function () {
+    return Inertia::render('Inbox');
+})->middleware(['auth', 'verified'])->name('upcoming');
+
+Route::get('/filters-labels', function () {
+    return Inertia::render('Inbox');
+})->middleware(['auth', 'verified'])->name('filters-labels');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

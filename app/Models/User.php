@@ -55,7 +55,7 @@ class User extends Authenticatable
 
     public function getDefaultProject(): Project
     {
-        return Project::where(['user_id' => $this->id])->first();
+        return Project::where(['user_id' => $this->id, 'is_default' => true])->first();
     }
 
 }

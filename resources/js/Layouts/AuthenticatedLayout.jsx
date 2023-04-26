@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { MantineProvider, AppShell, Navbar } from '@mantine/core';
+import { createStyles, getStylesRef, MantineProvider, AppShell, Navbar } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
@@ -7,15 +7,95 @@ import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
 import Header from '@/Components/Header';
+import {
+    IconInbox,
+    IconCalendarDue,
+    IconCalendarUp,
+    IconTags,
+  } from '@tabler/icons-react';
+
+const useStyles = createStyles((theme) => ({
+    link: {
+      ...theme.fn.focusStyles(),
+      width: 300,
+      display: 'flex',
+      alignItems: 'center',
+      textDecoration: 'none',
+      fontSize: theme.fontSizes.sm,
+      color: theme.colorScheme === 'dark' ? theme.colors.dark[1] : theme.colors.gray[7],
+      padding: `${theme.spacing.xs} ${theme.spacing.sm}`,
+      borderRadius: theme.radius.sm,
+      fontWeight: 500,
+
+      '&:hover': {
+        backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
+        color: theme.colorScheme === 'dark' ? theme.white : theme.black,
+
+        [`& .${getStylesRef('icon')}`]: {
+          color: theme.colorScheme === 'dark' ? theme.white : theme.black,
+        },
+      },
+    },
+
+    linkIcon: {
+      ref: getStylesRef('icon'),
+      color: theme.colorScheme === 'dark' ? theme.colors.dark[2] : theme.colors.gray[6],
+      marginRight: theme.spacing.sm,
+    },
+
+    linkActive: {
+      '&, &:hover': {
+        backgroundColor: theme.fn.variant({ variant: 'light', color: theme.primaryColor }).background,
+        color: theme.fn.variant({ variant: 'light', color: theme.primaryColor }).color,
+        [`& .${getStylesRef('icon')}`]: {
+          color: theme.fn.variant({ variant: 'light', color: theme.primaryColor }).color,
+        },
+      },
+    },
+  }));
+
+function AppNavBar({opened}) {
+    const data = [
+        { route: 'inbox', label: 'Inbox', icon: IconInbox },
+        { route: 'today', label: 'Today', icon: IconCalendarDue },
+        { route: 'upcoming', label: 'Upcoming', icon: IconCalendarUp },
+        { route: 'filters-labels', label: 'Filters & Labels', icon: IconTags },
+      ];
+
+    const { classes, cx } = useStyles();
+    const [active, setActive] = useState('Inbox');
+
+    const links = data.map((item) => (
+        <Link
+          className={cx(classes.link, { [classes.linkActive]: route().current(item.route) })}
+          href={route(item.route)}
+          key={item.label}
+        >
+          <item.icon className={classes.linkIcon} stroke={1.5} />
+          <span>{item.label}</span>
+        </Link>
+    ));
+    return (
+        <Navbar
+            sx={{ overflow: "hidden", transition: "width 300ms ease, min-width 300ms ease" }}
+            width={{ sm: opened ? 300 : 0 }}
+        >
+            <Navbar.Section grow>
+                {links}
+            </Navbar.Section>
+
+        </Navbar>
+    );
+}
 
 export default function Authenticated({ user, header, children }) {
-    const [opened, {toggle}] = useDisclosure(false);
+    const [opened, {toggle}] = useDisclosure(true);
 
     return (
         <MantineProvider withGlobalStyles withNormalizeCSS>
             <AppShell
                 padding="md"
-                navbar={ opened ? <Navbar width={{ base: 300 }} p="xs">This is the nav bar </Navbar> : null}
+                navbar={<AppNavBar opened={opened} />}
                 header={<Header user={user} opened={opened} toggle={toggle} height={60} p="xs">{/* Header content */}</Header>}
                 styles={(theme) => ({
                     main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] },
