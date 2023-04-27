@@ -37,7 +37,8 @@ class TodoController extends Controller
     public function store(StoreTodoRequest $request): RedirectResponse
     {
         $validated = $request->validate([
-            'message' => 'required|string|max:255',
+            'title' => 'required|string',
+            'description' => 'string',
         ]);
 
         $request->user()->todos()->create($validated);

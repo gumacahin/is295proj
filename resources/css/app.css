@@ -1,3 +1,13 @@
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; */
+
+.ProseMirror {
+    padding: 0 !important;
+    background: none;
+}
+
+/* FIXME: does not work */
+button[data-disabled="true"] {
+    cursor: not-allowed;
+}

@@ -17,7 +17,7 @@ import {
 const useStyles = createStyles((theme) => ({
     link: {
       ...theme.fn.focusStyles(),
-      width: 300,
+      whiteSpace: 'nowrap',
       display: 'flex',
       alignItems: 'center',
       textDecoration: 'none',
@@ -78,7 +78,7 @@ function AppNavBar({opened}) {
     return (
         <Navbar
             sx={{ overflow: "hidden", transition: "width 300ms ease, min-width 300ms ease" }}
-            width={{ sm: opened ? 300 : 0 }}
+            width={{ xs: opened ? 300 : 0 }}
         >
             <Navbar.Section grow>
                 {links}

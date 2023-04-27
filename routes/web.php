@@ -63,6 +63,10 @@ Route::resource('todos', TodoController::class)
     ->only(['index', 'store', 'update', 'destroy'])
     ->middleware(['auth', 'verified']);
 
+Route::resource('sections', SectionController::class)
+    ->only(['index', 'store', 'update', 'destroy'])
+    ->middleware(['auth', 'verified']);
+
 Route::resource('projects', ProjectController::class)
     // ->only(['index', 'store', 'update', 'destroy'])
     ->middleware(['auth', 'verified']);
