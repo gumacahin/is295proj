@@ -57,15 +57,16 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProjectRequest $request, Project $project): RedirectResponse
+    public function update(UpdateProjectRequest $request, Project $project): mixed
     {
         $project->update($request->validated());
 
+        // if (request()->wantsJson()) {
         if ($project->is_default) {
-            return redirect(route('inbox'));
+            return response()->noContent();
         }
 
-        return redirect(route('projects.index', $project));
+        return redirect()->route('projects.show', $project);
     }
 
     /**

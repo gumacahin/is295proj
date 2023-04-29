@@ -1,19 +1,21 @@
 import { useEffect } from 'react';
 import TitleBar from '@/Components/TitleBar';
-import { Stack, Container } from '@mantine/core';
+import { Group, Stack, Text, Container } from '@mantine/core';
 import AddTask from '@/Components/AddTask';
 import AddSection from '@/Components/AddSection';
+import Section from '@/Components/ProjectSection';
 
-export default function ProjectBoardView({ saveLayout, actions, project }) {
+export default function ProjectBoardView({ project }) {
     // useEffect(() => saveLayout(), []);
+    const unsectioned = {
+        title: '(no section)',
+        tasks: project.unsectionedTodos
+    }
 
     return (
-        <Container>
-            <TitleBar title={`BOARD: ${project.title}`} actions={actions} />
-            {/* <Stack align='stretch' spacing='xs'>
-                <AddTask project={project} />
-                <AddSection project={project} />
-            </Stack> */}
-        </Container>
+        <Group>
+            <Section section={unsectioned} unsectioned  />
+            {project.sections.map(section => <Section key={section.id} section={section} unsectioned  />)}
+        </Group>
     );
 }

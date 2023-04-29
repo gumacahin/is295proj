@@ -8,17 +8,14 @@ export default function ProjectListView({ saveLayout, actions, project }) {
     // useEffect(() => saveLayout(), []);
 
     return (
-        <Container>
-            <TitleBar title={project.title} actions={actions} />
-            <Stack align='stretch' spacing='xs'>
-                { project.unsectioned_todos.map(todo => (
-                    <Box key={todo.id}>
-                        <Title order={3} dangerouslySetInnerHTML={{__html:todo.title}}/>
-                        <Text dangerouslySetInnerHTML={{__html:todo.description}}/>
-                    </Box>))}
-                <AddTask project={project} />
-                <AddSection project={project} />
-            </Stack>
-        </Container>
+        <Stack align='stretch' spacing='xs'>
+            { project.unsectioned_todos.map(todo => (
+                <Box key={todo.id}>
+                    <Title order={3} dangerouslySetInnerHTML={{__html:todo.title}}/>
+                    <Text dangerouslySetInnerHTML={{__html:todo.description}}/>
+                </Box>))}
+            <AddTask project={project} />
+            <AddSection project={project} />
+        </Stack>
     );
 }

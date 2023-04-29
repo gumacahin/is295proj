@@ -32,7 +32,7 @@ import { IconAdjustmentsHorizontal, IconLayoutList, IconCheck } from '@tabler/ic
 //     )
 // }
 
-export default function ProjectViewMenu({data, setData, processing}) {
+export default function ProjectViewMenu({view, setView, processing}) {
 
     return (
         <Menu shadow="md" closeOnItemClick={false}>
@@ -48,7 +48,7 @@ export default function ProjectViewMenu({data, setData, processing}) {
                         { label: 'List', value: 'list' },
                         { label: 'Board', value: 'board' },
                     ]}
-                value={data.layout} onChange={(layout) => setData('layout', layout) } />
+                value={view} onChange={(view) => setView(view) } />
             </Menu.Item>
         </Menu.Dropdown>
         </Menu>

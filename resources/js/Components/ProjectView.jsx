@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Container } from '@mantine/core';
 import { Head, useForm } from '@inertiajs/react';
 import ProjectBoardView from './ProjectBoardView';
@@ -6,34 +7,38 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import ProjectViewMenu from './ProjectViewMenu';
 import CommentsView from './CommentsView';
 import MoreActionsMenu from './MoreActionsMenu';
+import TitleBar from './TitleBar';
 
 export default function ProjectView({auth, project}) {
-    const { put, data, setData, processing } = useForm({ ...project});
+    const [processing, setProcessing] = useState(false);
+    const [view, setView] = useState(project.layout);
 
     const actions = [
-        <ProjectViewMenu processing={processing} data={data} setData={setData} project={project} key={ProjectViewMenu.name} />,
+        <ProjectViewMenu processing={processing} view={view} setView={setView} project={project} key={ProjectViewMenu.name} />,
         <CommentsView key={CommentsView.name} />,
         <MoreActionsMenu key={MoreActionsMenu.name} />
     ];
 
-    function saveLayout() {
-        put(route('projects.update', project));
-    }
+    useEffect(() => {
+        if (project.layout !== view) {
+            saveLayout();
+        }
+    }, [view]);
 
-
-    // Set the value of the data when the the value of the segmented control
-    // changes.
-
-    // Save the value of the layout attribute when the list/board component
-    // mounts
+    const saveLayout = async () => {
+        setProcessing(true);
+        await axios.put(route('projects.update', project), { ...project, layout: view })
+        setProcessing(false);
+    };
 
     return (
         <>
             <Head title={project.title} />
             <AuthenticatedLayout user={auth.user} >
+                <TitleBar title={project.title} actions={actions} />
                 <Container>
                     {
-                        project.layout === 'list'
+                        view === 'list'
                             ? <ProjectListView saveLayout={saveLayout} project={project} actions={actions} />
                             : <ProjectBoardView saveLayout={saveLayout} project={project} actions={actions} />
                     }

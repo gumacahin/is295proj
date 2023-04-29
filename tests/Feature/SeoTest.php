@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use Illuminate\Support\HtmlString;
 
-class AppTest extends TestCase
+class SeoTest extends TestCase
 {
     /**
      * HomePage exists.
@@ -52,12 +52,12 @@ class AppTest extends TestCase
         $descriptionLength = strlen($description);
         // TODO: A/B test
         // SEO description length should be 150-160. Settle for the middle for now.
-        $seoMinDescriptionLength = 150;
-        $seoMaxDescriptionLength = 160;
+        $minDescriptionLength = 150;
+        $maxDescriptionLength = 160;
         // $maxDescriptionLength = 155;
 
-        $this->assertGreaterThanOrEqual($seoMinDescriptionLength, $descriptionLength);
-        $this->assertLessThanOrEqual($seoMaxDescriptionLength, $descriptionLength);
+        $this->assertGreaterThanOrEqual($minDescriptionLength, $descriptionLength);
+        $this->assertLessThanOrEqual($maxDescriptionLength, $descriptionLength);
 
         $response = $this->get('/');
         $response->assertSee($description);

@@ -41,7 +41,11 @@ Route::get('/inbox', function () {
 })->middleware(['auth', 'verified'])->name('inbox');
 
 Route::get('/today', function () {
-    return Inertia::render('Today');
+    $user = auth()->user();
+    return Inertia::render('Today', [
+        'overdue' => $user->overdueTasks,
+        'today' => $user->today,
+    ]);
 })->middleware(['auth', 'verified'])->name('today');
 
 Route::get('/upcoming', function () {
@@ -71,7 +75,7 @@ Route::resource('todos', TodoController::class)
 //     ->middleware(['auth', 'verified']);
 
 Route::resource('projects', ProjectController::class)
-    ->only(['index', 'store', 'update', 'destroy'])
+    ->only(['index', 'store', 'update', 'destroy', 'show'])
     ->middleware(['auth', 'verified']);
 
 require __DIR__.'/auth.php';

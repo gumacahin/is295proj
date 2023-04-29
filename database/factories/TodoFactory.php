@@ -19,6 +19,9 @@ class TodoFactory extends Factory
         return [
             'title' => fake()->words(rand(2, 15), true),
             'description' => fake()->paragraph(),
+            'project_id' => function() {
+                return \App\Models\Project::factory()->create()->id;
+            }
         ];
     }
 }
