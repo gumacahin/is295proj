@@ -16,7 +16,7 @@ function CommentsModal() {
     );
 }
 
-export default function ViewComments({project}) {
+export default function CommentsView({project}) {
     const [opened, {open, close}] = useDisclosure(false);
 
     const title = (

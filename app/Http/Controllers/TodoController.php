@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateTodoRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use App\Models\Todo;
+use App\Models\Project;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -39,11 +40,22 @@ class TodoController extends Controller
         $validated = $request->validate([
             'title' => 'required|string',
             'description' => 'string',
+            'projectId' => 'required|int',
         ]);
 
-        $request->user()->todos()->create($validated);
+        // TODO: auth
+        $project = Project::where([
+            'id' => $validated['projectId'],
+            'user_id' => $request->user()->id
+        ])->first();
 
-        return redirect(route('home'));
+        $project->todos()->create($validated);
+
+        if ($project->is_default) {
+            return redirect(route('inbox'));
+        }
+
+        return redirect(route('project.home', $project));
     }
 
     /**

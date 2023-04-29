@@ -1,4 +1,4 @@
-import { Text, ActionIcon, Group, createStyles, rem } from '@mantine/core';
+import { Box, Text, ActionIcon, Group, createStyles, rem } from '@mantine/core';
 import { IconSend, IconX } from '@tabler/icons-react';
 import { useEditor, BubbleMenu } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
@@ -6,8 +6,17 @@ import Placeholder from '@tiptap/extension-placeholder';
 import { RichTextEditor, Link} from '@mantine/tiptap';
 import { Extension } from '@tiptap/core';
 import { Plugin, PluginKey } from 'prosemirror-state';
-import { useForm } from '@mantine/form';
-import { useForm as useInertiaForm } from '@inertiajs/react';
+import { useFocusWithin } from '@mantine/hooks';
+import { useForm } from '@inertiajs/react';
+
+const useStyles = createStyles((theme) => ({
+    form: {
+        borderWidth: 1 ,
+        borderStyle: 'solid',
+        borderRadius: theme.spacing.xs,
+        padding: theme.spacing.md,
+    }
+}));
 
 const useTitleStyles = createStyles((theme) => ({
     root: {
@@ -56,45 +65,62 @@ const NoNewLine = Extension.create({
     },
 });
 
-export default function TodoForm({close, submit, todo}) {
+export default function TodoForm({close, submit, project, todo }) {
+    const { ref, focused } = useFocusWithin();
+    const { classes } = useStyles();
     const { classes: title } = useTitleStyles();
     const { classes: description } = useDescriptionStyles();
 
-    const form = useForm({
-        initialValues: {
-            title: '',
-            description: '',
-        },
-        validate: {
-            title: (value) => value.replace(/^(<p>)+|(<\/p>)+$/gi, "").length > 0 ? null : 'Title is required',
-        },
+
+    const { data, setData, post, reset } = useForm({
+        title: '',
+        description: '',
+        projectId: project.id
     });
 
-    const { data, setData, patch, clearErrors, reset, errors } = useInertiaForm({
-        message: '',
-    });
+    const isValidTitle = (value) => value.replace(/^(<p>)+|(<\/p>)+$/gi, "").length > 0;
 
     const titleEditor = useEditor({
         extensions: [StarterKit, Link,
             NoNewLine.configure({ onEnter: submit}),
             Placeholder.configure({ placeholder: 'Task name' })],
-        content: form.values.title,
+        content: data.title,
         onUpdate: ({ editor }) => {
-            form.setFieldValue('title', editor.getHTML());
+            setData('title', editor.getHTML());
         },
     });
 
     const descriptionEditor = useEditor({
         extensions: [StarterKit, Link,
             Placeholder.configure({ placeholder: 'Description' })],
-        content: form.values.description,
+        content: data.description,
         onUpdate: ({ editor }) => {
-            form.setFieldValue('description', editor.getHTML());
+            setData('description', editor.getHTML());
         }
     });
 
+    function submit(e) {
+        e.preventDefault()
+        post(
+            route('todos.store'),
+            {
+                onSuccess: () => {
+                    reset();
+                    close();
+                }
+            }
+        );
+    }
+
     return (
-        <form onSubmit={form.onSubmit((values) => console.log(values))}>
+        <Box
+            component="form"
+            onSubmit={submit}
+            className={classes.form}
+            ref={ref}
+            sx={(theme) => ({
+                borderColor: focused ? theme.colors.gray[6] : theme.colors.gray[3]
+            })} >
             <RichTextEditor classNames={title} editor={titleEditor}>
                 {titleEditor && (
                     <BubbleMenu editor={titleEditor}>
@@ -122,13 +148,13 @@ export default function TodoForm({close, submit, todo}) {
                 <RichTextEditor.Content />
             </RichTextEditor>
             <Group position="right">
-                <ActionIcon disabled={ !form.isValid() } component="button" type="submit" variant="filled" color>
+                <ActionIcon disabled={!isValidTitle(data.title)} component="button" type="submit" variant="filled" color>
                     <IconSend />
                 </ActionIcon>
                 <ActionIcon onClick={close}>
                     <IconX />
                 </ActionIcon>
             </Group>
-        </form>
+        </Box>
     );
 }

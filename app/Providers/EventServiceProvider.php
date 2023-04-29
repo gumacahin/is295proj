@@ -24,7 +24,7 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         TodoCreated::class => [
-            SendTodoCreatedNotifications::class,
+            // SendTodoCreatedNotifications::class,
         ],
 
         Registered::class => [

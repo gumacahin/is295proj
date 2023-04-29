@@ -19,7 +19,7 @@ class Project extends Model
     public static $rules = [
         'title' => 'required',
         'layout' => 'required|in:list,board',
-        'color' => 'regex:/^#?[a-fA-F0-9]{6}$/',
+        'color' => 'nullable|regex:/^#?[a-fA-F0-9]{6}$/',
     ];
 
     protected $casts = [

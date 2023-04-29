@@ -32,21 +32,24 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/inbox', function () {
+    $inbox = auth()->user()->getDefaultProject();
+    $inbox->load('unsectionedTodos');
+    $inbox->load('sections');
     return Inertia::render('Inbox', [
-        'project' => Auth::user()->getDefaultProject()
+        'project' => $inbox
     ]);
 })->middleware(['auth', 'verified'])->name('inbox');
 
 Route::get('/today', function () {
-    return Inertia::render('Inbox');
+    return Inertia::render('Today');
 })->middleware(['auth', 'verified'])->name('today');
 
 Route::get('/upcoming', function () {
-    return Inertia::render('Inbox');
+    return Inertia::render('Upcoming');
 })->middleware(['auth', 'verified'])->name('upcoming');
 
 Route::get('/filters-labels', function () {
-    return Inertia::render('Inbox');
+    return Inertia::render('FiltersLabels');
 })->middleware(['auth', 'verified'])->name('filters-labels');
 
 Route::get('/dashboard', function () {
@@ -63,12 +66,12 @@ Route::resource('todos', TodoController::class)
     ->only(['index', 'store', 'update', 'destroy'])
     ->middleware(['auth', 'verified']);
 
-Route::resource('sections', SectionController::class)
-    ->only(['index', 'store', 'update', 'destroy'])
-    ->middleware(['auth', 'verified']);
+// Route::resource('sections', SectionController::class)
+//     ->only(['index', 'store', 'update', 'destroy'])
+//     ->middleware(['auth', 'verified']);
 
 Route::resource('projects', ProjectController::class)
-    // ->only(['index', 'store', 'update', 'destroy'])
+    ->only(['index', 'store', 'update', 'destroy'])
     ->middleware(['auth', 'verified']);
 
 require __DIR__.'/auth.php';
