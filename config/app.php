@@ -13,9 +13,33 @@ return [
     | framework needs to place the application's name in a notification or
     | any other location as required by the application or its packages.
     |
+    | This value appears between <title></title> tags.
+    |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'UPOU IS295A capstone project'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Application Description
+    |--------------------------------------------------------------------------
+    |
+    | This value appears as the content of:
+    | <meta name="description" value="{APP_DESCRIPTION}">
+    |
+    */
+    'description' => env('APP_DESCRIPTION', 'Web-Application built with Laravel and InertiaJS. IS295a project by ME Alviar.'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Application Keywords
+    |--------------------------------------------------------------------------
+    |
+    | This value appears as the content of:
+    | <meta name="keywords" value="{APP_KEYWORDS}">
+    |
+    */
+    'keywords' => env('APP_KEYWORDS', 'laravel,intertiajs,webapp,project,mis,upou'),
 
     /*
     |--------------------------------------------------------------------------

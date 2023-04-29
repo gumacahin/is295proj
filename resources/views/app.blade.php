@@ -3,6 +3,8 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="{{ config('app.description', 'IS295a Laravel/Inertia App') }}">
+        <meta name="keywords" content="{{ config('app.keywords', 'laravel,inertia,app' ) }}">
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
 

@@ -8,7 +8,7 @@ class Kernel extends HttpKernel
 {
     protected $commands = [
         // ...
-        App\Console\Commands\TestSpecCommand::class => null,
+        // App\Console\Commands\TestSpecCommand::class => null,
     ];
 
     /**
