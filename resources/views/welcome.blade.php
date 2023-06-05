@@ -10,7 +10,7 @@
         <meta name="description" content="{{ config('app.description', 'IS295a Laravel/Inertia App') }}">
         <meta name="keywords" content="{{ config('app.keywords', 'laravel,inertia,app' ) }}">
 
-        <title>{{ config('app.name', 'Sipag App') }}</title>
+        <title>{{ config('app.name', 'TaskWise') }}</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

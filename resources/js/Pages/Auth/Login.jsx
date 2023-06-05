@@ -71,7 +71,7 @@ export default function Login({appName, canResetPassword}) {
                     className={classes.form} radius={0} p={30}>
                     <Title order={2} className={classes.title} ta="center" mt="md" mb={50}>
                     Welcome back to{' '}
-                    <Anchor component={Link} href={route('home')}>Sipag App</Anchor>
+                    <Anchor component={Link} href={route('home')}>Task Wise</Anchor>
                     </Title>
 
                     <TextInput

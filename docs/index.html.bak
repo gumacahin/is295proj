@@ -41,8 +41,8 @@
   <dt>What is the objective of this project?</dt>
 
   <dd>The objective of this project is to develop and evaluate the usefulness
-    of a web-based application provistionally called &ldquo;Sipag&rdquo;.
-    Sipag serves as an efficient and beneficial task-management and
+    of a web-based application provistionally called &ldquo;TaskWise&rdquo;.
+    TaskWise serves as an efficient and beneficial task-management and
     productivity-tracking tool for the UPOU community.</dd>
  <dt>What are some key features that define the product?</dt>
 
@@ -60,7 +60,7 @@
 
  <dt>What makes this product different from others?</dt>
 
-<dd>Sipag is a web-based planner and productivity tracker that aligns with the
+<dd>TaskWise is a web-based planner and productivity tracker that aligns with the
   practices of faculty and staff of the University of the Philippines Open
   University (UPOU) for planning and productivity tracking. The proposed system
   has a unique selling point as it is based on a research-based approach that
@@ -77,8 +77,8 @@
 <dl>
  <dt>What is the scope of this project?</dt>
 
- <dd>The scope of this project is to build a web application called Sipag
- (provisionally) that is based on industry best practices and standards.
+ <dd>The scope of this project is to build a web application called TaskWise
+ that is based on industry best practices and standards.
  The goal is to strategically plan and execute the development of a
  production-grade application that will be beneficial to the UPOU community.
  </dd>
